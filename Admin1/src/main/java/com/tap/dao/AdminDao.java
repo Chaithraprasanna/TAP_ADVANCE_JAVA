@@ -11,34 +11,33 @@ import java.util.List;
 import com.tap.model.Admin;
 
 public class AdminDao {
-	
-	
+
 	private String url="jdbc:mysql://localhost:3306/chaithradb";
 	private String username="root";
 	private String password="Chaitu@123";
 	private String driver="com.mysql.cj.jdbc.Driver";
 	
 	
-	private static final String INSERT_ADMINS_SQL = "insert into admins" + "  (name, email, password) values "
+	private static final String INSERT_ADMINS_SQL = "insert into admin" + "  (name, email, password) values "
 			+ " (?, ?, ?)";
 
-	private static final String SELECT_ADMIN_BY_ID = "select id,name,email,password from admins where id =?";
-	private static final String SELECT_ALL_ADMINS = "select * from admins";
-	private static final String DELETE_ADMINS_SQL = "delete from admins where id = ?;";
-	private static final String UPDATE_ADMINS_SQL = "update admins set name = ?,email= ?, password =? where id = ?;";
+	private static final String SELECT_ADMIN_BY_ID = "select id,name,email,password from admin where id =?";
+	private static final String SELECT_ALL_ADMINS = "select * from admin";
+	private static final String DELETE_ADMINS_SQL = "delete from admin where id = ?;";
+	private static final String UPDATE_ADMINS_SQL = "update admin set name = ?,email= ?, password =? where id = ?;";
 	
 	public AdminDao() {
 	}
+	
 	protected Connection getConnection() {
+		
         Connection connection = null;
         try {
             Class.forName(driver);
             connection = DriverManager.getConnection(url,username,password);
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return connection;
@@ -47,8 +46,7 @@ public class AdminDao {
     public void insertAdmin(Admin admin) throws SQLException {
         System.out.println(INSERT_ADMINS_SQL);
         // try-with-resource statement will auto close the connection.
-        try (Connection connection = getConnection(); 
-        	PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ADMINS_SQL)) {
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ADMINS_SQL)) {
             preparedStatement.setString(1, admin.getName());
             preparedStatement.setString(2, admin.getEmail());
             preparedStatement.setString(3, admin.getPassword());
@@ -61,6 +59,7 @@ public class AdminDao {
 
     public Admin selectAdmin(int id) {
         Admin admin = null;
+        
         // Step 1: Establishing a Connection
         try (Connection connection = getConnection();
             // Step 2:Create a statement using connection object
@@ -148,5 +147,3 @@ public class AdminDao {
         }
     }
 }
-		
-
